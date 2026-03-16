@@ -1,0 +1,199 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem 1rem;
+  width: 100%;
+  max-width: 400px;
+}
+ 
+/* =============================================
+   Title  
+   ============================================= */
+ 
+.main h1 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(16px, 5vw, 28px);
+  color: var(--c-x);
+  text-shadow: 0 0 10px rgba(0, 245, 255, 0.6), 0 0 30px rgba(0, 245, 255, 0.2);
+  letter-spacing: 4px;
+  text-align: center;
+  animation: flicker 4s infinite;
+}
+ 
+@keyframes flicker {
+  0%, 94%, 96%, 100% { opacity: 1; }
+  95% { opacity: 0.7; }
+}
+ 
+/* =============================================
+   Board Grid
+   ============================================= */
+ 
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  width: min(300px, 85vw);
+}
+ 
+.board aside {
+  aspect-ratio: 1;
+}
+ 
+/* =============================================
+   Buttons (celdas del tablero)
+   ============================================= */
+ 
+.board button {
+  width: 100%;
+  height: 100%;
+  background: var(--c-surface);
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--radius);
+  color: var(--c-text);
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(22px, 6vw, 34px);
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color var(--transition),
+              box-shadow var(--transition),
+              background var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+ 
+/* Brillo sutil de fondo en reposo */
+.board button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.03) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+ 
+/* Hover en celdas vacías */
+.board button:not(:disabled):hover {
+  border-color: var(--c-muted);
+  background: #1a1a28;
+}
+ 
+/* Celda marcada con X */
+.board button.x-played {
+  color: var(--c-x);
+  border-color: rgba(0, 245, 255, 0.4);
+  box-shadow: var(--glow-x);
+  background: rgba(0, 245, 255, 0.04);
+}
+ 
+/* Celda marcada con O */
+.board button.o-played {
+  color: var(--c-o);
+  border-color: rgba(255, 0, 110, 0.4);
+  box-shadow: var(--glow-o);
+  background: rgba(255, 0, 110, 0.04);
+}
+ 
+.board button:disabled {
+  cursor: not-allowed;
+}
+ 
+/* =============================================
+   Indicador de turno
+   ============================================= */
+ 
+.turn {
+  background: var(--c-surface);
+  border: 1.5px solid var(--c-border);
+  border-radius: 12px;
+  padding: 0.75rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-width: 200px;
+}
+ 
+.turn p:first-child {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+ 
+/* Valor del turno actual (X u O) */
+.turn p:nth-child(2) {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 20px;
+  transition: color 0.2s, text-shadow 0.2s;
+}
+ 
+/* Aplicar desde JS según turno:
+   turn-x → color cian / turn-o → color magenta */
+.turn p:nth-child(2).turn-x {
+  color: var(--c-x);
+  text-shadow: var(--glow-x);
+}
+ 
+.turn p:nth-child(2).turn-o {
+  color: var(--c-o);
+  text-shadow: var(--glow-o);
+}
+ 
+/* Anuncio del ganador */
+.turn p:nth-child(3) {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--c-muted);
+}
+ 
+.turn p:nth-child(3).winner-x {
+  color: var(--c-x);
+  text-shadow: var(--glow-x);
+  animation: winner-pulse 1s ease-in-out infinite alternate;
+}
+ 
+.turn p:nth-child(3).winner-o {
+  color: var(--c-o);
+  text-shadow: var(--glow-o);
+  animation: winner-pulse 1s ease-in-out infinite alternate;
+}
+ 
+@keyframes winner-pulse {
+  from { opacity: 0.75; }
+  to   { opacity: 1; }
+}
+ 
+/* =============================================
+   Responsive
+   ============================================= */
+ 
+@media (max-width: 360px) {
+  .board {
+    gap: 6px;
+  }
+  .turn {
+    padding: 0.6rem 1.2rem;
+    gap: 0.5rem;
+  }
+}
+ 
+/* =============================================
+   Reduced motion
+   ============================================= */
+ 
+@media (prefers-reduced-motion: reduce) {
+  .main h1,
+  .turn p:nth-child(3) {
+    animation: none;
+  }
+  .board button {
+    transition: none;
+  }
+}
