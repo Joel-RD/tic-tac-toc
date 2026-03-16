@@ -50,6 +50,11 @@ body {
   z-index: 100;
 }
 
+.home_link {
+  display: flex;
+  gap: 2rem;
+}
+
 .navbar {
   display: flex;
   justify-content: space-between;

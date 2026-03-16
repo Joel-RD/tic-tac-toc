@@ -31,6 +31,13 @@
    Board Grid
    ============================================= */
  
+.game-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
 .board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -108,6 +115,7 @@
    ============================================= */
  
 .turn {
+  margin-top: 2rem;
   background: var(--c-surface);
   border: 1.5px solid var(--c-border);
   border-radius: 12px;
